@@ -1,0 +1,33 @@
+{
+  "name": "neighborhood-sense",
+  "displayName": "Neighborhood Sense",
+  "version": "0.1.0",
+  "description": "Lets Claude answer questions about Singapore neighbourhoods using Real Signal's calm-AI substrate. Reads atmosphere, Moment Quality, intent, silence, prediction-track-record. Never invents, always cites.",
+  "author": "Real Signal Research",
+  "homepage": "https://real-signal.ai",
+  "license": "MIT",
+  "mcpServer": {
+    "url": "https://real-signal.ai/api/mcp",
+    "transport": "http"
+  },
+  "tools": [
+    "list_pockets",
+    "lookup_pocket_by_name",
+    "get_pocket_moment",
+    "get_pocket_moment_quality",
+    "get_pocket_atmosphere",
+    "get_pocket_silence",
+    "get_pocket_predictions",
+    "get_intent_substrate",
+    "get_observed_outlet",
+    "get_pocket_sustainability"
+  ],
+  "tags": [
+    "mcp",
+    "calm-ai",
+    "neighborhood",
+    "singapore",
+    "real-signal",
+    "attention-ethics"
+  ]
+}
