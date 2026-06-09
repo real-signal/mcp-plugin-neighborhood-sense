@@ -118,7 +118,9 @@ the dev surface for at least the first few iterations, then decide.
 ## 4. npm scope — publish `@real-signal/mcp-plugin-neighborhood-sense`
 
 Per `package.json`, the package name is `@real-signal/mcp-plugin-neighborhood-sense`,
-which requires the `@real-signal` scope to exist on npm.
+which requires the `@real-signal` scope (organization) to exist on npm. The
+`realsignal` user account (no hyphen) owns the `real-signal` org (with hyphen)
+— that's the npm session to publish from.
 
 ```bash
 # Create the npm organisation (free for public packages).
