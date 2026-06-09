@@ -1,11 +1,14 @@
 {
   "name": "neighborhood-sense",
   "displayName": "Neighborhood Sense",
-  "version": "0.1.0",
-  "description": "Lets Claude answer questions about Singapore neighbourhoods using Real Signal's calm-AI substrate. Reads atmosphere, Moment Quality, intent, silence, prediction-track-record. Never invents, always cites.",
+  "version": "0.2.0",
+  "description": "Lets Claude answer questions about Singapore neighbourhoods using Real Signal's calm-AI substrate. Reads atmosphere, Moment Quality, intent, silence, prediction-track-record, legitimacy index, monthly state-of-pocket reports, and per-outlet autopilot backtests. Never invents, always cites. Read-only.",
   "author": "Real Signal Research",
   "homepage": "https://real-signal.ai",
   "license": "MIT",
+  "privacy_policies": [
+    "https://real-signal.ai/privacy"
+  ],
   "mcpServer": {
     "url": "https://real-signal.ai/api/mcp",
     "transport": "http"
@@ -20,14 +23,28 @@
     "get_pocket_predictions",
     "get_intent_substrate",
     "get_observed_outlet",
-    "get_pocket_sustainability"
+    "get_pocket_sustainability",
+    "score_legitimacy",
+    "get_pocket_futures",
+    "get_accuracy_report",
+    "get_pocket_counterfactuals",
+    "get_state_of_pocket",
+    "simulate_outlet_autopilot",
+    "get_state_of_restraint",
+    "get_legitimacy_index_today",
+    "get_weekly_report",
+    "get_benchmark_leaderboard"
   ],
+  "tools_excluded": {
+    "submit_benchmark_predictions": "Write tool — out of scope for the calm-AI read-only plugin. Benchmark participants use the underlying MCP server directly via dedicated tooling, not through ambient Claude queries."
+  },
   "tags": [
     "mcp",
     "calm-ai",
     "neighborhood",
     "singapore",
     "real-signal",
-    "attention-ethics"
+    "attention-ethics",
+    "read-only"
   ]
 }
