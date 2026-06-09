@@ -39,26 +39,33 @@ the full 20-tool inventory.
 
 ---
 
-## 2. Server-side blocker — every tool needs a `title` field
+## 2. Server-side `title` field — DONE (same commit as the manifest bump)
 
 Per `https://claude.com/docs/connectors/building/review-criteria.md`:
 "Every tool needs a `title` field plus either `readOnlyHint: true` or
 `destructiveHint: true` to control permission prompts in Claude."
 
-Audit result against production server (`POST /api/mcp tools/list`,
-2026-06-08): all 21 tools have `annotations.readOnlyHint` set correctly
-(20 true, 1 false on `submit_benchmark_predictions`). **None of them have
-a `title` field.** This is a blocker for directory acceptance and has to
-be fixed server-side in `api/_lib/mcp-tools.js` — not in this plugin.
+Pre-fix audit (`POST /api/mcp tools/list`, 2026-06-08): all 21 tools had
+correct `annotations.readOnlyHint` but **none had a `title` field**.
 
-Suggested fix: add a `title` field to every entry in the `TOOLS` registry
-in `api/_lib/mcp-tools.js`. The titles should be short, human-readable,
-and consistent with the existing description prose. Pair the change with
-the plugin extraction commit so the directory submission is unblocked.
+Fix shipped: added a short human-readable `title` to every entry in the
+`TOOLS` registry in `api/_lib/mcp-tools.js`, extended the I1 invariant to
+require `title` and enforce the ≤100-char directory cap at module load
+(fail-fast in CI), and updated `listTools()` to include `title` in the
+MCP wire output. The `mcp-tools.test.js` `listTools` assertion now
+verifies every tool has a non-empty title under the cap. All 78 tests
+still pass.
 
-This is a small, mechanical change but it touches the live MCP server, so
-it sits with you to decide whether to bundle it with the extraction PR or
-ship it separately.
+After your next deploy lands, verify with:
+
+```bash
+curl -sS -X POST https://real-signal.ai/api/mcp \
+  -H 'Content-Type: application/json' \
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' \
+  | jq '.result.tools[] | {name, title}'
+```
+
+Every row should have a non-null title.
 
 ---
 
@@ -209,19 +216,17 @@ applies — no gradient backgrounds, no marketing energy.
 
 ## 6. Order of operations
 
-1. Decide whether to ship the `title` field server-side fix in the same PR
-   as the plugin extraction commit (recommended) or separately.
-2. Extract the scaffold to `github.com/real-signal/mcp-plugin-neighborhood-sense`
+1. Extract the scaffold to `github.com/real-signal/mcp-plugin-neighborhood-sense`
    via subtree split (§ 3).
-3. Create the `@real-signal` npm scope and publish v0.2.0 (§ 4). The npm
+2. Create the `@real-signal` npm scope and publish v0.2.0 (§ 4). The npm
    listing is not strictly required for directory acceptance but it's
    useful for the developer-hub story and for fork-and-modify users.
-4. Generate the icon + 3 screenshots (§ 5 screenshots).
-5. Submit to the Connectors Directory via `https://clau.de/mcp-directory-submission`
+3. Generate the icon + 3 screenshots (§ 5 screenshots).
+4. Submit to the Connectors Directory via `https://clau.de/mcp-directory-submission`
    (§ 5 fallback URL). Track status at
    `https://claude.ai/admin-settings/directory/submissions` if you have
    admin access, otherwise wait on email confirmation.
-6. (Optional, later) Submit to the Plugins Directory via Console at
+5. (Optional, later) Submit to the Plugins Directory via Console at
    `https://platform.claude.com/plugins/submit`.
 
 The whole flow is roughly 90 minutes of founder time, assuming the icon
@@ -246,8 +251,6 @@ What's NOT done in this commit (your call):
   section is now stale; all 20 tools are live. Holding off in case you
   want to keep that section as a teaching device or rewrite it your way.
 - `package.json` devDeps fix for vitest (drift caught while auditing).
-- Adding `title` to every tool in `api/_lib/mcp-tools.js` (server-side,
-  bigger blast radius).
 - Generating the icon + screenshots.
 - The actual extraction + push to the public repo.
 - The directory submission itself.
