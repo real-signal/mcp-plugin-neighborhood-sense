@@ -19,10 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----
-
-Attribution: when used in user-facing contexts that consume Real Signal's
-substrate, please include "Powered by Real Signal (real-signal.ai)" or
-equivalent visible attribution. This is in keeping with the substrate's
-CC BY-NC-ND 4.0 license terms (see https://real-signal.ai/LICENSE-CONTENT.md).

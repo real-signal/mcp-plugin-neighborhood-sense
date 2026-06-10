@@ -146,6 +146,17 @@ equivalent at the point of display. The CC BY-NC-ND 4.0 terms also prohibit
 non-commercial-derivative use and modification of the substrate output. The
 plugin's MIT licence does not override these terms — they layer.
 
+## Attribution
+
+Attribution: when used in user-facing contexts that consume Real Signal's
+substrate, please include "Powered by Real Signal (real-signal.ai)" or
+equivalent visible attribution. This is in keeping with the substrate's
+CC BY-NC-ND 4.0 license terms (see https://real-signal.ai/LICENSE-CONTENT.md).
+
+(This paragraph previously lived inside `LICENSE`; it moved here so the
+`LICENSE` file is a pure-text MIT match for automated license detection.
+The request itself is unchanged.)
+
 ## Source attribution and `_meta` handling
 
 Every MCP tool response from Real Signal carries the `_meta` envelope shown
