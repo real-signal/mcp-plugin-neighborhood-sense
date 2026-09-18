@@ -1,8 +1,8 @@
 {
   "name": "neighborhood-sense",
   "displayName": "Neighborhood Sense",
-  "version": "0.2.0",
-  "description": "Lets Claude answer questions about Singapore neighbourhoods using Real Signal's calm-AI substrate. Reads atmosphere, Moment Quality, intent, silence, prediction-track-record, legitimacy index, monthly state-of-pocket reports, and per-outlet autopilot backtests. Never invents, always cites. Read-only.",
+  "version": "0.4.0",
+  "description": "Lets Claude answer questions about Singapore neighbourhoods using Real Signal's calm-AI substrate. Reads atmosphere, Moment Quality, citizen perception, intent, silence, prediction-track-record, legitimacy index, monthly state-of-pocket reports, live experiences, and per-outlet autopilot backtests. When nothing is live it returns an honest structured fallback (why silent + the pocket's retrospective rhythm) rather than an empty result — never invents, always cites. Read-only.",
   "author": "Real Signal Research",
   "homepage": "https://real-signal.ai",
   "license": "MIT",
@@ -19,6 +19,7 @@
     "get_pocket_moment",
     "get_pocket_moment_quality",
     "get_pocket_atmosphere",
+    "get_pocket_perception",
     "get_pocket_silence",
     "get_pocket_predictions",
     "get_intent_substrate",
@@ -33,7 +34,14 @@
     "get_state_of_restraint",
     "get_legitimacy_index_today",
     "get_weekly_report",
-    "get_benchmark_leaderboard"
+    "get_benchmark_leaderboard",
+    "get_live_moment_story",
+    "get_available_experiences",
+    "find_calm_pocket_now",
+    "compare_pockets",
+    "get_merchant_readiness",
+    "get_pocket_equilibrium",
+    "get_pocket_packages"
   ],
   "tools_excluded": {
     "submit_benchmark_predictions": "Write tool — out of scope for the calm-AI read-only plugin. Benchmark participants use the underlying MCP server directly via dedicated tooling, not through ambient Claude queries."

@@ -4,6 +4,78 @@ All notable changes to this plugin will be recorded here. Format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); the plugin tracks
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.4.0 — 2026-09-16
+
+Brings the manifest to full read-only parity with the production MCP
+server and makes the "what's happening now" pattern demonstrate useful
+silence.
+
+Added to the manifest tools list (all read-only, shipped since 0.3.0):
+
+- `get_live_moment_story`, `get_available_experiences` — the Dual
+  Discovery live layer. `get_available_experiences` returns
+  merchant-confirmed live commitments, and — new this release — an
+  honest structured `fallback` when none are live (why silent, presence
+  status, the pocket's retrospective rhythm, and what would make it
+  live) instead of a bare empty list.
+- `find_calm_pocket_now`, `compare_pockets` — network-scope calm
+  discovery.
+- `get_merchant_readiness`, `get_pocket_equilibrium`,
+  `get_pocket_packages` — remaining read substrate.
+
+`submit_benchmark_predictions` stays excluded (the one write tool).
+
+Changed:
+
+- `isAnythingHappeningNear` now checks live experiences first and, when
+  nothing is live, surfaces the response's structured fallback
+  (retrospective rhythm + reason for silence) rather than a blank
+  "nothing happening" line. The empty state is never blank and never
+  fabricates presence — synthetic / confidence-gated readings are never
+  reported as live.
+
+## 0.3.0 — 2026-06-13
+
+Adds the citizen sensing layer + makes the package npm-publish ready.
+
+Added:
+
+- `get_pocket_perception` in the manifest tools list. The MCP server's
+  22nd tool — shipped 2026-06-11 — returns the aggregate citizen-sense
+  distribution (calm / busy / social / focused / transitional) for a
+  pocket plus the agent-vs-citizen agreement scalar when both readings
+  exist. Aggregate-only with n≥5 floor honoured exactly as the public
+  Pocket Pulse widget enforces it. Read-only, calm-AI shaped, naturally
+  composes into Claude responses about "how does Cluny feel right now"
+  questions.
+
+Plugin packaging:
+
+- `package.json` `files` field added — npm tarball now ships only
+  `src/`, `.well-known/`, `examples/`, `README.md`, `LICENSE`,
+  `CHANGELOG.md`. Internal docs (`FOUNDER_HANDOFF.md`) stay in the repo
+  for the founder but never publish.
+- `exports` field added so consumers can `import { compose... } from
+  '@real-signal/mcp-plugin-neighborhood-sense'` and also reach the
+  manifest via `.../manifest`.
+- Isolated `vitest.config.js` so the package tests cleanly in
+  standalone — same fix applied to `@real-signal/attention-ethics` on
+  2026-06-12 when that package extracted from the monorepo.
+- Smoke tests added under `src/index.test.js` — verifies the five
+  composition functions are exported as expected, the manifest is
+  parseable JSON with the required fields, and the manifest tool list
+  matches the documented "live today" set (`get_pocket_perception`
+  included now).
+
+Manifest changes:
+
+- `version` bumped 0.2.0 → 0.3.0.
+- `description` rewritten to mention "citizen perception" alongside
+  atmosphere / Moment Quality.
+- `tools` array gains `get_pocket_perception` (now 21 read-only tools
+  exposed; `submit_benchmark_predictions` remains the one write tool
+  carved out per `tools_excluded`).
+
 ## 0.2.0 — 2026-06-08
 
 Catches the manifest up to the live MCP server. Between 2026-06-06 (0.1.0)

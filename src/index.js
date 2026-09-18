@@ -146,10 +146,13 @@ export async function whereCanIWorkThisAfternoon(client) {
  * fact — not as a fallback.
  *
  * Substrate trail:
- *   1. lookup_pocket_by_name(query=placeName)  — resolve to pocket_id
- *   2. get_pocket_moment(pocket_id)            — current Moment
- *   3. (when live) get_pocket_silence(pocket_id) — signal-status code
- *   4. compose
+ *   1. lookup_pocket_by_name(query=placeName)      — resolve to pocket_id
+ *   2. get_available_experiences(pocket_id)        — live commitments
+ *   3. (when empty) read the response's structured fallback — why silent
+ *      + retrospective rhythm + what would make it live (useful silence)
+ *   4. (older server, no fallback) get_pocket_moment(pocket_id)
+ * The empty state is never blank: a cold "what's happening" answer still
+ * returns the pocket's honest retrospective and the reason for silence.
  *
  * @param {object} client - MCP client.
  * @param {string} placeName - free-text place name.
@@ -165,13 +168,41 @@ export async function isAnythingHappeningNear(client, placeName) {
   }
   const pocket_id = match.pocket_id
 
+  // Live commitments first — a merchant-confirmed experience is the
+  // only thing Real Signal treats as "happening now".
+  const live = await client.callTool('get_available_experiences', { pocket_id })
+  pushMeta(sources, live)
+  const lc = live?.structuredContent
+  if (lc && lc.count > 0) {
+    const n = lc.count
+    return { text: `${pocket_id} · ${n} merchant-confirmed live ${n === 1 ? 'experience' : 'experiences'} right now.`, sources }
+  }
+
+  // Nothing live. Surface the honest structured fallback rather than a
+  // blank "nothing happening" — this is the useful-silence contract: why
+  // it is silent + what can still be said (the pocket's retrospective
+  // rhythm), with the presence status that guarantees no fabricated
+  // busyness claim.
+  const fb = lc?.fallback
+  if (fb) {
+    return {
+      text: fb.narrative,
+      live_status: fb.live_status,
+      presence_status: fb.presence_status,
+      retrospective_rhythm: fb.retrospective_rhythm || null,
+      what_would_make_it_live: fb.what_would_make_it_live || null,
+      sources,
+    }
+  }
+
+  // Last resort — no fallback envelope (older server): read the Moment
+  // directly so the answer still says something true.
   const moment = await client.callTool('get_pocket_moment', { pocket_id })
   pushMeta(sources, moment)
   const m = moment?.structuredContent
   if (!m) {
     return { text: `pocket ${pocket_id} has no observable moment right now.`, sources }
   }
-
   const parts = []
   if (m.primary_state) parts.push(`${m.primary_state}`)
   if (typeof m.calm_probability === 'number') parts.push(`calm ${m.calm_probability.toFixed(2)}`)

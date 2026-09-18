@@ -1,0 +1,91 @@
+{
+  "name": "Real Signal",
+  "slug": "real-signal",
+  "description": "Calm, source-attributed neighbourhood intelligence for AI assistants.",
+  "remote_mcp_url": "https://real-signal.ai/api/mcp",
+  "discovery_manifest_url": "https://real-signal.ai/.well-known/mcp.json",
+  "documentation_url": "https://real-signal.ai/mcp/quickstart.md",
+  "reference_url": "https://real-signal.ai/mcp/reference.md",
+  "privacy_or_takedown_url": "https://real-signal.ai/takedown",
+  "license_url": "https://real-signal.ai/LICENSE-CONTENT.md",
+  "auth": {
+    "mode": "none_for_public_read_tools",
+    "notes": "Public MCP reads are unauthenticated and rate-limited; benchmark submission is append-only and must be reviewed separately."
+  },
+  "publisher": {
+    "github_repository_url": "blocked_by_owner_identity",
+    "npm_package_name": "@real-signal/mcp-plugin-neighborhood-sense",
+    "npm_version": "0.4.0",
+    "maintainer": "Real Signal Research",
+    "support_email": "hello@real-signal.ai"
+  },
+  "review_prompts": [
+    "Which neighbourhoods does Real Signal currently observe?",
+    "What has Cluny Court's weekly rhythm looked like recently? Cite the report and timestamp it.",
+    "Is there a confirmed experience worth discovering near Cluny Court right now? Explain an empty result honestly.",
+    "Separate strict high-confidence prediction accuracy from raw exploratory accuracy and report insufficient-data states explicitly."
+  ],
+  "submission_status": "ready_pending_owner_repository_and_npm_publication",
+
+  "_finalization": {
+    "note": "Publisher fields resolved from committed repo/config; github_repository_url stays blocked_by_owner_identity because the repo is not yet created (the packet's stated blocker). Nothing invented. Added below: verification evidence + the runtime contracts the packet requires (tasks 3-6). NOT PUBLISHED, NOT SUBMITTED.",
+    "finalized_at": "2026-09-17",
+    "packet_reconcile": "Draft schema matched field-for-field. The CONNECTORS_AND_MCP_PACKET.pdf could not be text-extracted in the working environment (embedded subset fonts; no poppler/pypdf), so runtime requirements were taken from the founder's transcribed instruction, which matches the draft's review_prompts.",
+
+    "publisher_resolution": {
+      "github_repository_url": { "status": "blocked_by_owner_identity", "intended": "https://github.com/real-signal/mcp-plugin-neighborhood-sense", "note": "declared in package.json; repo not created yet — owner must create (public, MIT) and push external/mcp-plugin-neighborhood-sense/ as root" },
+      "npm_package_name": { "status": "confirmed", "source": "package.json name" },
+      "npm_version": { "status": "confirmed", "source": "package.json version" },
+      "npm_publication": { "status": "blocked_by_owner_identity", "note": "@real-signal scope not created / not published yet" },
+      "maintainer": { "status": "confirmed", "source": "package.json author + submission runsheet" },
+      "support_email": { "status": "confirmed", "source": "package.json author + submission runsheet" }
+    },
+
+    "public_urls_verified": {
+      "checked_at": "2026-09-17T09:34Z",
+      "method": "CI probe against production https://real-signal.ai",
+      "all_200": true,
+      "production_clean": "manifest + llms.txt carry no localhost/preview/vercel.app URLs",
+      "results": {
+        "/api/mcp": 200,
+        "/.well-known/mcp.json": 200,
+        "/llms.txt": 200,
+        "/llms-full.txt": 200,
+        "/mcp/quickstart.md": 200,
+        "/mcp/reference.md": 200,
+        "/docs/schemas": 200,
+        "/docs/examples": 200,
+        "/takedown": 200,
+        "/LICENSE-CONTENT.md": 200
+      }
+    },
+
+    "response_envelope": {
+      "implemented_in": "api/_lib/pocket-fallback.js buildEnvelope(); verified live on get_available_experiences",
+      "status_enum": ["live", "empty", "insufficient_data", "degraded", "unavailable"],
+      "fields": ["status", "as_of", "source_url", "methodology_url", "sample.window", "sample.n", "sample.minimum_required", "claim_policy", "attribution.required", "attribution.license"],
+      "rules": ["empty is honest-empty not failure", "degraded is labelled degraded", "sample.n null is never coerced to 0", "synthetic/confidence-gated readings are never reported as live"]
+    },
+
+    "accuracy_guardrail": {
+      "implemented_in": "get_accuracy_report structuredContent.prediction_quality; verified live",
+      "strict_high_confidence": "confidence >= 0.68 AND substrate_completeness >= 0.75; own denominator; 'unavailable or insufficiently supported' (null, never 0) when no eligible rows",
+      "raw_exploratory": "all revealed graded rows incl. low-confidence forecasts; separate number + denominator",
+      "rules": ["never merge strict and raw", "include denominator + window + sample cap", "degraded read -> state:degraded not 0%", "null never presented as zero"],
+      "source_urls": ["https://real-signal.ai/api/accuracy", "https://real-signal.ai/api/trust"],
+      "methodology_url": "https://real-signal.ai/research/silence-correctness.md"
+    },
+
+    "server": { "discovery_manifest_version": "0.9.0", "tool_count": 29, "read_only": true, "write_tools_excluded": ["submit_benchmark_predictions"] },
+
+    "readiness": {
+      "ready_to_publish": true,
+      "do_not_publish": true,
+      "do_not_submit": true,
+      "blocked_only_by": [
+        "owner: create @real-signal npm scope + publish @real-signal/mcp-plugin-neighborhood-sense@0.4.0",
+        "owner: create public GitHub repo real-signal/mcp-plugin-neighborhood-sense + push external/mcp-plugin-neighborhood-sense/ as root"
+      ]
+    }
+  }
+}

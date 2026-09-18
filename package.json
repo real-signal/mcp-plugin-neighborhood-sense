@@ -1,6 +1,6 @@
 {
   "name": "@real-signal/mcp-plugin-neighborhood-sense",
-  "version": "0.2.0",
+  "version": "0.4.0",
   "description": "Real Signal MCP reference plugin — gives Claude calm, source-attributed neighbourhood intelligence for one Singapore neighbourhood (Cluny Court + adjacent pockets).",
   "license": "MIT",
   "author": "Real Signal Research <hello@real-signal.ai>",
@@ -21,8 +21,20 @@
   ],
   "type": "module",
   "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./manifest": "./.well-known/mcp-plugin.json"
+  },
+  "files": [
+    "src/",
+    ".well-known/",
+    "examples/",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
   "scripts": {
-    "test": "vitest run --passWithNoTests"
+    "test": "vitest run"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0"
