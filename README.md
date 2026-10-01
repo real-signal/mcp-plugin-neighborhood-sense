@@ -1,6 +1,6 @@
 # Neighborhood Sense — a Real Signal MCP plugin reference
 
-*Reference plugin · MIT-licensed · v0.1.0 · 2026-06-06*
+*Reference plugin · MIT-licensed · v0.4.0 · updated 2026-09-16*
 
 ## What it does
 
@@ -18,26 +18,23 @@ deliberately silent in a pocket, the plugin says so rather than fabricating.
 
 ## What it composes
 
-The plugin orchestrates the following tools from Real Signal's MCP server at
-`https://real-signal.ai/api/mcp`. Seven of these are live today; the
-remaining three are server-side scheduled work that the plugin manifest
-lists so a refreshed client picks them up automatically when they ship.
+The plugin orchestrates the read-only tools from Real Signal's production MCP
+server at `https://real-signal.ai/api/mcp`. The plugin manifest exposes **28
+read-only tools** in v0.4.0. The production server exposes 29 total tools; the
+only excluded tool is `submit_benchmark_predictions`, because it writes an
+append-only benchmark submission and is intentionally outside this plugin's
+read-only contract.
 
-Live (server-side, today):
+The current read surface includes pocket lookup and atmosphere, Moment Quality,
+citizen perception, intent, silence, predictions and accuracy, legitimacy,
+weekly/monthly state reports, outlet observations, merchant readiness,
+equilibrium, Package projections, Live Moment Stories, confirmed live
+experiences, calm-pocket discovery, pocket comparison, sustainability, and
+outlet-autopilot simulation.
 
-- `list_pockets` — enumerate the pockets the agent currently observes.
-- `lookup_pocket_by_name` — resolve a free-text place name to a canonical `pocket_id`.
-- `get_pocket_moment` — point-in-time read of atmosphere, calm probability, saturation, fragility, half-life.
-- `get_pocket_moment_quality` — the MQS scalar plus its five factor breakdown.
-- `get_pocket_atmosphere` — 15-minute atmosphere stream plus trend direction.
-- `get_observed_outlet` — public shadow-profile data for a specific outlet UUID.
-- `get_pocket_sustainability` — pocket-level sustainability ledger (physical impact + SGD recovery).
-
-Planned (manifest-listed, behaviour stubbed in this plugin):
-
-- `get_pocket_silence` — voice-locked silence justification + signal-status code + next-possible-window.
-- `get_pocket_predictions` — predictions-ledger summary with per-generator accuracy.
-- `get_intent_substrate` — data behind an `/intent/:pocket/:slug` page (calm-work, rain-shelter, decompression, etc.).
+For the exact current list, see `.well-known/mcp-plugin.json`. The manifest is
+the source of truth for this package; the production server's `tools/list`
+response is the source of truth for the server.
 
 The four composition patterns documented in `src/index.js` use only the live
 tools today and degrade gracefully (returning the calm "substrate has nothing
